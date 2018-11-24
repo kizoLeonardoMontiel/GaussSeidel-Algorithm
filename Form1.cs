@@ -13,6 +13,9 @@ namespace WindowsFormsApplication2
     public partial class Form1 : Form
     {
         float teste;
+        //calcula matriz
+        float[] nMenos1 = { 0, 0, 0 };
+        float[] n = { 0, 0, 0 }; // atual
         public Form1()
         {
             InitializeComponent();
@@ -42,19 +45,12 @@ namespace WindowsFormsApplication2
         //MUDAR COISAS AQUI
         private float[] calculaMatriz(float[,] mat, float[] res)
         {
-            float[] n = { 0, 0, 0 }; // atual
-            float[] nMenos1 = { 0, 0, 0 }; // 
-            for (int k = 0; k < res.Length; k++)
-            {
-                nMenos1[k] = 0;
-            }
-
-            float paradaConv = 0.001F; //critério de parada de convergencia
-            float maxInteracoes = 1000; //critério de parada por interação
+            float paradaConv = 0.00001F; //critério de parada de convergencia
+            float maxInteracoes = 40; //critério de parada por interação
             int numInteracoes = 0; //contador de interações
             bool continuar = true;
-
-           
+            while (continuar && numInteracoes < maxInteracoes)
+            {
                 for (var i = 0; i < res.Length; i++)
                 {
                     float soma = 0;
@@ -67,9 +63,29 @@ namespace WindowsFormsApplication2
                         soma = soma + mat[i, j1] * nMenos1[j1];
                     }
                     n[i] = (res[i] - soma) / mat[i, i];
+                    
                 }
+                if (Math.Abs(norm(n) - norm(nMenos1)) < paradaConv) {
+                    continuar = false;
+                }
+                else
+                {
+                    textBox2.Text = numInteracoes.ToString();
+                    nMenos1[0] = n[0];
+                    nMenos1[1] = n[1];
+                    nMenos1[2] = n[2];
+                }
+                numInteracoes++;
+            }
             
             return n;
+        }
+
+        private double norm(float[] f)
+        {
+            double fa;
+            fa = Math.Sqrt(Math.Pow(f[0], f[0]) + Math.Pow(f[1], f[1]) + Math.Pow(f[2], f[2]));
+            return fa;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -77,12 +93,14 @@ namespace WindowsFormsApplication2
             float[,] mat = {{float.Parse(x1.Text), float.Parse(y1.Text), float.Parse(z1.Text)},
                             {float.Parse(x2.Text), float.Parse(y2.Text), float.Parse(z2.Text)},
                             {float.Parse(x3.Text), float.Parse(y3.Text), float.Parse(z3.Text)}};
-            float[] res = {float.Parse(r1.Text), float.Parse(r2.Text), float.Parse(r3.Text)};
+            float[] res = { float.Parse(r1.Text), float.Parse(r2.Text), float.Parse(r3.Text) };
             float[] resMat = calculaMatriz(mat, res);
             Result1.Text = resMat[0].ToString();
             Result2.Text = resMat[1].ToString();
             Result3.Text = resMat[2].ToString();
-
+            nMenoSum1.Text = nMenos1[0].ToString();
+            nMenoSum2.Text = nMenos1[1].ToString();
+            nMenoSum3.Text = nMenos1[2].ToString();
         }
 
         private float modulus(float t)
@@ -110,20 +128,21 @@ namespace WindowsFormsApplication2
             validaMatriz(z1);
             validaMatriz(z2);
             validaMatriz(z3);
-
             //arrumar - critérios estão incorretos
-     //       if (!(float.Parse(x1.Text) > modulus(float.Parse(y1.Text))) && !(float.Parse(x1.Text) > modulus(float.Parse(z1.Text))))
-       //     {
-         //       MessageBox.Show("Impossível gerar uma solução.");
-     //       }
-       //     if (!(float.Parse(y2.Text) > modulus(float.Parse(x2.Text))) && !(float.Parse(y2.Text) > modulus(float.Parse(z2.Text))))
-         //   {
-           //     MessageBox.Show("Impossível gerar uma solução");
-     //       }
-       //     if (!(float.Parse(z3.Text) > modulus(float.Parse(x3.Text))) && !(float.Parse(z3.Text) > modulus(float.Parse(y3.Text))))
-         //   {
-           //     MessageBox.Show("Impossível gerar uma solução");
-     //       }
+            //       if (!(float.Parse(x1.Text) > modulus(float.Parse(y1.Text))) && !(float.Parse(x1.Text) > modulus(float.Parse(z1.Text))))
+            //     {
+            //       MessageBox.Show("Impossível gerar uma solução.");
+            //       }
+            //     if (!(float.Parse(y2.Text) > modulus(float.Parse(x2.Text))) && !(float.Parse(y2.Text) > modulus(float.Parse(z2.Text))))
+            //   {
+            //     MessageBox.Show("Impossível gerar uma solução");
+            //       }
+            //     if (!(float.Parse(z3.Text) > modulus(float.Parse(x3.Text))) && !(float.Parse(z3.Text) > modulus(float.Parse(y3.Text))))
+            //   {
+            //     MessageBox.Show("Impossível gerar uma solução");
+            //       }
+
+            //pega valores das caixas e transforma em matriz
 
             button1.Enabled = true;
         }
