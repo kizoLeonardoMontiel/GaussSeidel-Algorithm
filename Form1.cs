@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 namespace WindowsFormsApplication2
 {
     public partial class Form1 : Form
@@ -47,7 +48,7 @@ namespace WindowsFormsApplication2
             float paradaConv = 0.00000001F; //critério de parada de convergencia
             critParada.Text = paradaConv.ToString();
             float maxInteracoes = 40; //critério de parada por interação
-            int numInteracoes = 0; //contador de interações
+            int numInteracoes = 1; //contador de interações
             bool continuar = true;
             while (continuar && numInteracoes <= maxInteracoes)
             {
@@ -65,7 +66,7 @@ namespace WindowsFormsApplication2
                     n[i] = (res[i] - soma) / mat[i, i];
                     
                 }
-                if (Math.Abs(n[0] - nMenos1[0]) < paradaConv && Math.Abs(n[1] - nMenos1[1]) < paradaConv && Math.Abs(n[2] - nMenos1[2]) < paradaConv) {
+                if (Math.Abs(norm(nMenos1) - norm(n)) < paradaConv) {
                     continuar = false;
                 }
                 else
@@ -80,6 +81,11 @@ namespace WindowsFormsApplication2
             return n;
         }
 
+        private double norm(float[] f)
+        {
+            double fa = Math.Sqrt(Math.Pow(f[0], 2) + Math.Pow(f[1], 2) + Math.Pow(f[2], 2));
+            return fa;
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -94,6 +100,9 @@ namespace WindowsFormsApplication2
             nMenoSum1.Text = nMenos1[0].ToString();
             nMenoSum2.Text = nMenos1[1].ToString();
             nMenoSum3.Text = nMenos1[2].ToString();
+            xTrunc.Text = Math.Truncate(resMat[0]).ToString();
+            yTrunc.Text = Math.Truncate(resMat[1]).ToString();
+            zTrunc.Text = Math.Truncate(resMat[2]).ToString();
         }
 
         private void button2_Click(object sender, EventArgs e)

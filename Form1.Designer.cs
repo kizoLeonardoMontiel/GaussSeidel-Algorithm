@@ -71,6 +71,10 @@
             this.Result3 = new System.Windows.Forms.TextBox();
             this.Result2 = new System.Windows.Forms.TextBox();
             this.Result1 = new System.Windows.Forms.TextBox();
+            this.varZ = new System.Windows.Forms.TextBox();
+            this.varY = new System.Windows.Forms.TextBox();
+            this.Variacao = new System.Windows.Forms.Label();
+            this.varX = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // x1
@@ -440,12 +444,49 @@
             this.Result1.Size = new System.Drawing.Size(76, 20);
             this.Result1.TabIndex = 46;
             // 
+            // varZ
+            // 
+            this.varZ.Enabled = false;
+            this.varZ.Location = new System.Drawing.Point(341, 349);
+            this.varZ.Name = "varZ";
+            this.varZ.Size = new System.Drawing.Size(76, 20);
+            this.varZ.TabIndex = 52;
+            // 
+            // varY
+            // 
+            this.varY.Enabled = false;
+            this.varY.Location = new System.Drawing.Point(248, 349);
+            this.varY.Name = "varY";
+            this.varY.Size = new System.Drawing.Size(76, 20);
+            this.varY.TabIndex = 51;
+            // 
+            // Variacao
+            // 
+            this.Variacao.AutoSize = true;
+            this.Variacao.Location = new System.Drawing.Point(53, 349);
+            this.Variacao.Name = "Variacao";
+            this.Variacao.Size = new System.Drawing.Size(49, 13);
+            this.Variacao.TabIndex = 50;
+            this.Variacao.Text = "Variação";
+            // 
+            // varX
+            // 
+            this.varX.Enabled = false;
+            this.varX.Location = new System.Drawing.Point(157, 349);
+            this.varX.Name = "varX";
+            this.varX.Size = new System.Drawing.Size(76, 20);
+            this.varX.TabIndex = 49;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(457, 427);
+            this.Controls.Add(this.varZ);
+            this.Controls.Add(this.varY);
+            this.Controls.Add(this.Variacao);
+            this.Controls.Add(this.varX);
             this.Controls.Add(this.Result3);
             this.Controls.Add(this.Result2);
             this.Controls.Add(this.Result1);
@@ -545,6 +586,10 @@
         private System.Windows.Forms.TextBox Result3;
         private System.Windows.Forms.TextBox Result2;
         private System.Windows.Forms.TextBox Result1;
+        private System.Windows.Forms.TextBox varZ;
+        private System.Windows.Forms.TextBox varY;
+        private System.Windows.Forms.Label Variacao;
+        private System.Windows.Forms.TextBox varX;
     }
 }
 
