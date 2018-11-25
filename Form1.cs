@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace WindowsFormsApplication2
 {
     public partial class Form1 : Form
@@ -45,11 +44,12 @@ namespace WindowsFormsApplication2
         //MUDAR COISAS AQUI
         private float[] calculaMatriz(float[,] mat, float[] res)
         {
-            float paradaConv = 0.00001F; //critério de parada de convergencia
+            float paradaConv = 0.00000001F; //critério de parada de convergencia
+            critParada.Text = paradaConv.ToString();
             float maxInteracoes = 40; //critério de parada por interação
             int numInteracoes = 0; //contador de interações
             bool continuar = true;
-            while (continuar && numInteracoes < maxInteracoes)
+            while (continuar && numInteracoes <= maxInteracoes)
             {
                 for (var i = 0; i < res.Length; i++)
                 {
@@ -65,7 +65,7 @@ namespace WindowsFormsApplication2
                     n[i] = (res[i] - soma) / mat[i, i];
                     
                 }
-                if (Math.Abs(norm(n) - norm(nMenos1)) < paradaConv) {
+                if (Math.Abs(n[0] - nMenos1[0]) < paradaConv && Math.Abs(n[1] - nMenos1[1]) < paradaConv && Math.Abs(n[2] - nMenos1[2]) < paradaConv) {
                     continuar = false;
                 }
                 else
@@ -77,16 +77,9 @@ namespace WindowsFormsApplication2
                 }
                 numInteracoes++;
             }
-            
             return n;
         }
 
-        private double norm(float[] f)
-        {
-            double fa;
-            fa = Math.Sqrt(Math.Pow(f[0], f[0]) + Math.Pow(f[1], f[1]) + Math.Pow(f[2], f[2]));
-            return fa;
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -103,20 +96,6 @@ namespace WindowsFormsApplication2
             nMenoSum3.Text = nMenos1[2].ToString();
         }
 
-        private float modulus(float t)
-        {
-            float n;
-            if(t < 0)
-            {
-                n = t * -1;
-            }
-            else
-            {
-                n = t;
-            }
-            return n;
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             validaMatriz(x1);
@@ -128,23 +107,27 @@ namespace WindowsFormsApplication2
             validaMatriz(z1);
             validaMatriz(z2);
             validaMatriz(z3);
-            //arrumar - critérios estão incorretos
-            //       if (!(float.Parse(x1.Text) > modulus(float.Parse(y1.Text))) && !(float.Parse(x1.Text) > modulus(float.Parse(z1.Text))))
-            //     {
-            //       MessageBox.Show("Impossível gerar uma solução.");
-            //       }
-            //     if (!(float.Parse(y2.Text) > modulus(float.Parse(x2.Text))) && !(float.Parse(y2.Text) > modulus(float.Parse(z2.Text))))
-            //   {
-            //     MessageBox.Show("Impossível gerar uma solução");
-            //       }
-            //     if (!(float.Parse(z3.Text) > modulus(float.Parse(x3.Text))) && !(float.Parse(z3.Text) > modulus(float.Parse(y3.Text))))
-            //   {
-            //     MessageBox.Show("Impossível gerar uma solução");
-            //       }
-
-            //pega valores das caixas e transforma em matriz
-
-            button1.Enabled = true;
+            //Checa se o valor da diagonal principal é igual ou maior que os valores nas diagonais secundarias
+            bool possivel = true;
+            if (!(Math.Abs(float.Parse(x1.Text)) >= Math.Abs(float.Parse(y1.Text))) && !(Math.Abs(float.Parse(x1.Text)) >= Math.Abs(float.Parse(z1.Text))))
+            {
+                MessageBox.Show("Impossível gerar uma solução.");
+                possivel = false;
+            }
+            if (!(Math.Abs(float.Parse(y2.Text)) >= Math.Abs(float.Parse(x2.Text))) && !(Math.Abs(float.Parse(y2.Text)) >= Math.Abs(float.Parse(z2.Text))))
+            {
+                MessageBox.Show("Impossível gerar uma solução");
+                possivel = false;
+            }
+            if (!(Math.Abs(float.Parse(z3.Text)) >= Math.Abs(float.Parse(x3.Text))) && !(Math.Abs(float.Parse(z3.Text)) >= Math.Abs(float.Parse(y3.Text))))
+            {
+                MessageBox.Show("Impossível gerar uma solução");
+                possivel = false;
+            }
+            if (possivel) {
+                button1.Enabled = true;
+            }
+            
         }
 
         private void x1_Leave(object sender, EventArgs e)
